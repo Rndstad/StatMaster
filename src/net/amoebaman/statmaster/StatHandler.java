@@ -13,14 +13,29 @@ public abstract class StatHandler {
 	List<String> categories = new ArrayList<String>();
 	
 	public void registerDefaultStats(){
-		registerStat(new Statistic("Kills", 0, "default"));
-		registerStat(new Statistic("Deaths", 0, "default"));
-		registerStat(new Statistic("KTD Ratio", 1, "default"));
-		registerStat(new Statistic("ELO Skill", 1000, "default"));
-		registerStat(new Statistic("Highest Multikill", 0, "default"));
-		registerStat(new Statistic("Longest Spree", 0, "default"));
+		registerStat(new Statistic("Player Kills", 0, "default", "pvp", "combat", "kills"));
+		registerStat(new Statistic("Player Deaths", 0, "default", "pvp", "combat", "deaths"));
+		registerStat(new Statistic("KTD Ratio", 1, "default", "pvp"));
+		registerStat(new Statistic("ELO Skill", 1000, "default", "pvp"));
+		registerStat(new Statistic("Highest Multikill", 0, "default", "pvp"));
+		registerStat(new Statistic("Longest Spree", 0, "default", "pvp"));
 		
-		registerCommunityStat(new Statistic("Kills", 0));
+		registerStat(new Statistic("Monster Kills", 0, "pve", "combat", "kills"));
+		registerStat(new Statistic("Animal Kills", 0, "pve", "combat", "kills"));
+		registerStat(new Statistic("Monster Deaths", 0, "pve", "combat", "deaths"));
+		registerStat(new Statistic("Natural Deaths", 0, "pve", "combat", "deaths"));
+		
+		registerStat(new Statistic("Blocks Mined", 0, "blocks", "tools"));
+		registerStat(new Statistic("Blocks Chopped", 0, "blocks", "tools"));
+		registerStat(new Statistic("Blocks Dug", 0, "blocks", "tools"));
+		registerStat(new Statistic("Blocks Torched", 0, "blocks", "tools"));
+		
+		registerStat(new Statistic("Fish Caught", 0, "food", "tools"));
+		registerStat(new Statistic("Cakes Baked", 0, "food", "crafting"));
+		registerStat(new Statistic("Notch Apples Crafted", 0, "food", "crafting"));
+		registerStat(new Statistic("Food Eaten", 0, "food", "survival"));
+		
+		registerCommunityStat(new Statistic("Player Kills", 0));
 		registerCommunityStat(new Statistic("ELO Change", 0));
 	}
 	
