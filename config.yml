@@ -1,0 +1,4 @@
+use-mysql-database: false
+database-url: 'localhost'
+database-username: 'root'
+database-password: ''

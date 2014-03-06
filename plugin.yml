@@ -1,0 +1,24 @@
+main: net.amoebaman.statmaster.StatMaster
+
+name: StatMaster
+version: 2.0
+author: AmoebaMan
+description: Provides an efficent and simple API for tracking statistics
+
+commands:
+
+  stats:
+    description: Displays the stats of any player
+    usage: /stats [player] [focus]
+  leaderboards:
+    aliases: [leaderboard, top, best, leaders, leader]
+    description: Displays the top players for any stat
+    usage: /leaderboards <stat> [#]
+  loserboards:
+    aliases: [loserboard, bottom, worst, losers, loser]
+    description: Displays the bottom players for any stat
+    usage: /loserboards <stat> [#]
+  export-file-stats-to-sql:
+    aliases: [stats-to-sql]
+    description: Exports all statistics from StatMaster/stats.yml to the SQL database
+    usage: /export-file-stats-to-sql
