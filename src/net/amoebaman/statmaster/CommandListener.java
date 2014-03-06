@@ -43,9 +43,9 @@ public class CommandListener{
 		
 		if(args.length > 1)
 			focus = args[1];
-		focus = StatMaster.getHandler().getCategory(focus);
+		String category = StatMaster.getHandler().getCategory(focus);
 		
-		if(focus == null && args.length >= 1)
+		if(category == null && args.length >= 1)
 			return new String[]{
 					ChatColor.ITALIC + focus + " is not a valid category",
 					ChatColor.ITALIC + "Available categories: " + StatMaster.getHandler().getRegisteredCategories() };
@@ -53,10 +53,10 @@ public class CommandListener{
 		List<String> toReturn = new ArrayList<String>();
 		toReturn.add(ChatColor.ITALIC + "Displaying " + focus + " stats for " + target.getName());
 		for(Statistic stat : StatMaster.getHandler().getRegisteredStats())
-			for(String category : stat.categories)
-				if(category.equalsIgnoreCase(focus) || category.toLowerCase().contains(focus.toLowerCase())){
+			for(String each : stat.categories)
+				if(each.equalsIgnoreCase(focus) || each.toLowerCase().contains(focus.toLowerCase())){
 					double value = StatMaster.getHandler().getStat(target, stat.space_name);
-					toReturn.add(ChatColor.ITALIC + "  " + stat.space_name + ": " + (Math.floor(value) == value ? (int) value : value));
+					toReturn.add(ChatColor.ITALIC + "  " + stat.space_name + ": " + (Math.abs(value - (int) value) < 0.001 ? (int) value : value));
 				}
 		return toReturn.toArray(new String[0]);
 	}
@@ -81,7 +81,7 @@ public class CommandListener{
 		}
 		List<OfflinePlayer> top = StatMaster.getHandler().getTopX(stat.space_name, x, false);
 		sender.sendMessage(ChatColor.ITALIC + "Displaying top " + x + ChatColor.ITALIC + " ranking players for " + stat.space_name);
-		for(int i = 0; i < x; i++){
+		for(int i = 0; i < x && i < top.size(); i++){
 			OfflinePlayer player = top.get(i);
 			sender.sendMessage("  " + ChatColor.ITALIC + (i + 1) + ") " + player.getName() + " - " + StatMaster.getHandler().getStat(player, stat.space_name)); 
 		}
@@ -105,10 +105,10 @@ public class CommandListener{
 			try{ x = Integer.parseInt(args[1]); }
 			catch(NumberFormatException nfe){}
 		}
-		List<OfflinePlayer> top = StatMaster.getHandler().getTopX(stat.space_name, x, true);
+		List<OfflinePlayer> bottom = StatMaster.getHandler().getTopX(stat.space_name, x, true);
 		sender.sendMessage(ChatColor.ITALIC + "Displaying bottom " + ChatColor.BOLD + x + ChatColor.ITALIC + " ranking players for " + ChatColor.BOLD + stat.space_name);
-		for(int i = 0; i < x; i++){
-			OfflinePlayer player = top.get(i);
+		for(int i = 0; i < x && i < bottom.size(); i++){
+			OfflinePlayer player = bottom.get(i);
 			sender.sendMessage("  " + ChatColor.ITALIC + (i + 1) + ") " + player.getName() + " - " + StatMaster.getHandler().getStat(player, stat.space_name)); 
 		}
 	}
