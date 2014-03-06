@@ -1,5 +1,6 @@
 package net.amoebaman.statmaster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.amoebaman.utils.CommandController.CommandHandler;
@@ -13,46 +14,51 @@ import org.bukkit.entity.Player;
 public class CommandListener{
 	
 	@CommandHandler(cmd = "stats")
-	public void stats(CommandSender sender, String[] args){
+	public String[] stats(CommandSender sender, String[] args){
 		OfflinePlayer target = null;
 		String focus = "default";
 		
 		if(args.length > 0){
-			target = Bukkit.getPlayer(args[0]);
-			if(target == null){
-				target = Bukkit.getOfflinePlayer(args[0]);
-				if(!target.hasPlayedBefore())
-					target = null;
-			}	
-			if(target == null)
-				focus = args[0];
+			
+			if(args[0].equalsIgnoreCase("help"))
+				return new String[]{ ChatColor.ITALIC + "Available categories: " + StatMaster.getHandler().getRegisteredCategories() };
+			
+			else{
+				target = Bukkit.getPlayer(args[0]);
+				if(target == null){
+					target = Bukkit.getOfflinePlayer(args[0]);
+					if(!target.hasPlayedBefore())
+						target = null;
+				}	
+				if(target == null)
+					focus = args[0];
+			}
 		}
-		else if(sender instanceof Player)
+		
+		if(sender instanceof Player && target == null)
 			target = (Player) sender;
 		
-		if(target == null){
-			sender.sendMessage(ChatColor.ITALIC + "Player could not be found");
-			return;
-		}
+		if(target == null)
+			return new String[]{ ChatColor.ITALIC + "Player could not be found" };
 		
 		if(args.length > 1)
 			focus = args[1];
 		focus = StatMaster.getHandler().getCategory(focus);
 		
-		if(focus == null){
-			if(args.length >= 1 && !args[0].equals("help"))
-				sender.sendMessage(ChatColor.ITALIC + focus + " is not a valid category");
-			sender.sendMessage(ChatColor.ITALIC + "Available categories: " + StatMaster.getHandler().getRegisteredCategories());
-			return;
-		}
+		if(focus == null && args.length >= 1)
+			return new String[]{
+					ChatColor.ITALIC + focus + " is not a valid category",
+					ChatColor.ITALIC + "Available categories: " + StatMaster.getHandler().getRegisteredCategories() };
 		
-		sender.sendMessage(ChatColor.ITALIC + "Displaying " + focus + " stats for " + target.getName());
+		List<String> toReturn = new ArrayList<String>();
+		toReturn.add(ChatColor.ITALIC + "Displaying " + focus + " stats for " + target.getName());
 		for(Statistic stat : StatMaster.getHandler().getRegisteredStats())
 			for(String category : stat.categories)
 				if(category.equalsIgnoreCase(focus) || category.toLowerCase().contains(focus.toLowerCase())){
 					double value = StatMaster.getHandler().getStat(target, stat.space_name);
-					sender.sendMessage(ChatColor.ITALIC + "  " + stat.space_name + ": " + (Math.floor(value) == value ? (int) value : value));
+					toReturn.add(ChatColor.ITALIC + "  " + stat.space_name + ": " + (Math.floor(value) == value ? (int) value : value));
 				}
+		return toReturn.toArray(new String[0]);
 	}
 	
 	@CommandHandler(cmd = "leaderboards")
