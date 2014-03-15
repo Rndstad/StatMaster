@@ -2,8 +2,6 @@ package net.amoebaman.statmaster;
 
 import net.amoebaman.statmaster.events.KillingSpreeEvent;
 import net.amoebaman.statmaster.events.MultiKillEvent;
-import net.amoebaman.utils.ChatUtils;
-import net.amoebaman.utils.ChatUtils.ColorScheme;
 import net.amoebaman.utils.GenUtil;
 import net.amoebaman.utils.maps.PlayerMap;
 
@@ -37,12 +35,9 @@ public class EventListener implements Listener {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(StatMaster.getPlugin(StatMaster.class), new Runnable(){ public void run(){
 			for(Player player : lastKill.playerKeySet())
 				if(player != null && System.currentTimeMillis() - lastKill.get(player) > 5000){
-					if(multiKill.get(player) >= 2){
-						Bukkit.broadcastMessage(ChatUtils.format("[[" + player.getName() + "]] has earned a [[" + multiKill.get(player) + "x]] multikill", ColorScheme.HIGHLIGHT));
-						if(multiKill.get(player) > StatMaster.getHandler().getStat(player, "highest multikill"))
-							StatMaster.getHandler().updateStat(player, "highest multikill", multiKill.get(player));
-						new MultiKillEvent(player, multiKill.get(player)).callEvent();
-					}
+					new MultiKillEvent(player, multiKill.get(player)).callEvent();
+					if(multiKill.get(player) >= 2 && multiKill.get(player) > StatMaster.getHandler().getStat(player, "highest multikill"))
+						StatMaster.getHandler().updateStat(player, "highest multikill", multiKill.get(player));
 					multiKill.put(player, 0);
 				}
 		}}, 0, 20);
@@ -75,17 +70,11 @@ public class EventListener implements Listener {
 					multiKill.put(killer, multiKill.get(killer) + 1);
 					lastKill.put(killer, System.currentTimeMillis());
 					
-					if(killSpree.get(killer) >= 3){
-						Bukkit.broadcastMessage(ChatUtils.format(" --> " + killer.getName() + " is on a spree of [[" + killSpree.get(killer) + "]] kills", ColorScheme.NORMAL));
+					new KillingSpreeEvent(killer, killSpree.get(killer), false).callEvent();
+					if(killSpree.get(killer) >= 3)
 						if(killSpree.get(killer) > StatMaster.getHandler().getStat(killer, "longest spree"))
 							StatMaster.getHandler().updateStat(killer, "longest spree", killSpree.get(killer));
-						new KillingSpreeEvent(killer, killSpree.get(killer), false).callEvent();
-					}
-					
-					if(killSpree.get(victim) >= 3){
-						Bukkit.broadcastMessage(ChatUtils.format(" --> Ended [[" + victim.getName() + "]]'s spree at [[" + killSpree.get(victim) + "]] kills", ColorScheme.NORMAL));
-						new KillingSpreeEvent(victim, killSpree.get(victim), true).callEvent();
-					}
+					new KillingSpreeEvent(victim, killSpree.get(victim), true).callEvent();
 					killSpree.put(victim, 0);
 					
 				}});
