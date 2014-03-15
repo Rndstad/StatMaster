@@ -70,11 +70,11 @@ public class EventListener implements Listener {
 					multiKill.put(killer, multiKill.get(killer) + 1);
 					lastKill.put(killer, System.currentTimeMillis());
 					
+					new KillingSpreeEvent(victim, killSpree.get(victim), true).callEvent();
 					new KillingSpreeEvent(killer, killSpree.get(killer), false).callEvent();
 					if(killSpree.get(killer) >= 3)
 						if(killSpree.get(killer) > StatMaster.getHandler().getStat(killer, "longest spree"))
 							StatMaster.getHandler().updateStat(killer, "longest spree", killSpree.get(killer));
-					new KillingSpreeEvent(victim, killSpree.get(victim), true).callEvent();
 					killSpree.put(victim, 0);
 					
 				}});
