@@ -92,7 +92,7 @@ public class SQLStatHandler extends StatHandler{
 	
 	public void validateConnection(){
 		try {
-			if(!conn.isValid(5000))
+			if(!conn.isValid(3))
 				establishConnection();
 		}
 		catch (SQLException e) { e.printStackTrace(); }
