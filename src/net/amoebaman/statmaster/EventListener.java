@@ -1,16 +1,8 @@
 package net.amoebaman.statmaster;
 
-import net.amoebaman.statmaster.events.KillingSpreeEvent;
-import net.amoebaman.statmaster.events.MultiKillEvent;
-import net.amoebaman.utils.GenUtil;
-import net.amoebaman.utils.maps.PlayerMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -25,6 +17,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
+
+import net.amoebaman.statmaster.events.KillingSpreeEvent;
+import net.amoebaman.statmaster.events.MultiKillEvent;
+import net.amoebaman.utils.maps.PlayerMap;
 
 public class EventListener implements Listener {
 	
@@ -49,7 +45,16 @@ public class EventListener implements Listener {
 		if(victim == null)
 			return;
 		if(victim.getLastDamageCause() instanceof EntityDamageByEntityEvent){
-			LivingEntity culprit = GenUtil.getTrueCulprit((EntityDamageByEntityEvent) victim.getLastDamageCause());
+			LivingEntity culprit = victim.getKiller();
+			if(culprit == null && victim.getLastDamageCause() instanceof EntityDamageByEntityEvent){
+				EntityDamageByEntityEvent lastDamage = (EntityDamageByEntityEvent) victim.getLastDamageCause();
+				Entity damager = lastDamage.getDamager();
+				if(damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof LivingEntity)
+					culprit = (LivingEntity) ((Projectile) damager).getShooter();
+				if(damager instanceof Tameable && ((Tameable) damager).getOwner() instanceof LivingEntity)
+					culprit = (LivingEntity) ((Tameable) damager).getOwner();
+			}
+			
 			if(culprit instanceof Player){
 				final Player killer = (Player) culprit;
 				
@@ -91,14 +96,11 @@ public class EventListener implements Listener {
 		LivingEntity victim = event.getEntity();
 		if(victim == null || victim instanceof Player)
 			return;
-		if(victim.getLastDamageCause() instanceof EntityDamageByEntityEvent){
-			LivingEntity culprit = GenUtil.getTrueCulprit((EntityDamageByEntityEvent) victim.getLastDamageCause());
-			if(culprit instanceof Player){
-				if(victim instanceof Animals)
-					StatMaster.getHandler().incrementStat((Player) culprit, "animal kills");
-				if(victim instanceof Monster)
-					StatMaster.getHandler().incrementStat((Player) culprit, "monster kills");
-			}
+		if(victim.getKiller() != null){
+			if(victim instanceof Animals)
+				StatMaster.getHandler().incrementStat((Player) victim.getKiller(), "animal kills");
+			if(victim instanceof Monster)
+				StatMaster.getHandler().incrementStat((Player) victim.getKiller(), "monster kills");
 		}
 	}
 	
