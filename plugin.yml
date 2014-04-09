@@ -4,6 +4,7 @@ name: StatMaster
 version: 2.0
 author: AmoebaMan
 description: Provides an efficent and simple API for tracking statistics
+depend: [Utils]
 
 commands:
 
