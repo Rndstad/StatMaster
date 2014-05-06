@@ -2,7 +2,7 @@ package net.amoebaman.statmaster;
 
 import java.io.File;
 
-import net.amoebaman.utils.CommandController;
+import net.amoebaman.amoebautils.CommandController;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

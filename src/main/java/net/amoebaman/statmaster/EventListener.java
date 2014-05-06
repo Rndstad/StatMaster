@@ -18,9 +18,9 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 
+import net.amoebaman.amoebautils.maps.PlayerMap;
 import net.amoebaman.statmaster.events.KillingSpreeEvent;
 import net.amoebaman.statmaster.events.MultiKillEvent;
-import net.amoebaman.utils.maps.PlayerMap;
 
 public class EventListener implements Listener {
 	

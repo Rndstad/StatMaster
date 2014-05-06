@@ -3,7 +3,7 @@ package net.amoebaman.statmaster;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.amoebaman.utils.CommandController.CommandHandler;
+import net.amoebaman.amoebautils.CommandController.CommandHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
