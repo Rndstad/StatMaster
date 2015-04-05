@@ -5,9 +5,40 @@
 		<groupId>net.amoebaman</groupId>
 		<artifactId>statmaster</artifactId>
 		<version>1.0</version>
+
+		<repositories>
+                <repository>
+                        <id>spigot-repo</id>
+                        <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+                </repository>
+                <repository>
+                        <id>amoeba-repo</id>
+                        <url>http://localhost:8081/nexus/content/repositories/amoeba-repo/</url>
+                </repository>
+		</repositories>
 		
-		<build>
-				<sourceDirectory>src/main/java</sourceDirectory>
+		<dependencies>
+				<dependency>
+						<groupId>org.bukkit</groupId>
+						<artifactId>bukkit</artifactId>
+						<version>1.8-R0.1-SNAPSHOT</version>
+				</dependency>
+				<dependency>
+				        <groupId>net.amoebaman</groupId>
+				        <artifactId>amoebautils</artifactId>
+				        <version>1.1</version>
+				</dependency>
+		</dependencies>
+
+        <distributionManagement>
+                <repository>
+                        <id>amoeba-repo</id>
+                        <url>http://localhost:8081/nexus/content/repositories/amoeba-repo/</url>
+                </repository>
+        </distributionManagement>
+        
+        <build>
+                <sourceDirectory>src/main/java</sourceDirectory>
                 <resources>
                         <resource>
                                 <targetPath>.</targetPath>
@@ -46,37 +77,6 @@
                                 </executions>
                         </plugin>
                 </plugins>
-		</build>
-
-		<repositories>
-				<repository>
-						<id>bukkit-repo</id>
-						<url>http://repo.bukkit.org/content/groups/public/</url>
-				</repository>
-                <repository>
-                        <id>amoeba-repo</id>
-                        <url>http://local.amoebaman.net:8081/nexus/content/repositories/amoeba-repo/</url>
-                </repository>
-		</repositories>
-		
-		<dependencies>
-				<dependency>
-						<groupId>org.bukkit</groupId>
-						<artifactId>bukkit</artifactId>
-						<version>1.7.8-R0.1-SNAPSHOT</version>
-				</dependency>
-				<dependency>
-				        <groupId>net.amoebaman</groupId>
-				        <artifactId>amoebautils</artifactId>
-				        <version>1.1</version>
-				</dependency>
-		</dependencies>
-
-        <distributionManagement>
-                <repository>
-                        <id>amoeba-repo</id>
-                        <url>http://local.amoebaman.net:8081/nexus/content/repositories/amoeba-repo/</url>
-                </repository>
-        </distributionManagement>
+        </build>
         
 </project>
