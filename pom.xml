@@ -11,10 +11,10 @@
                         <id>spigot-repo</id>
                         <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
                 </repository>
-                <repository>
-                        <id>amoeba-repo</id>
-                        <url>http://localhost:8081/nexus/content/repositories/amoeba-repo/</url>
-                </repository>
+            <repository>
+                <id>jitpack.io</id>
+                <url>https://jitpack.io</url>
+            </repository>
 		</repositories>
 		
 		<dependencies>
@@ -23,12 +23,12 @@
 						<artifactId>bukkit</artifactId>
 						<version>1.8-R0.1-SNAPSHOT</version>
 				</dependency>
-				<dependency>
-				        <groupId>net.amoebaman</groupId>
-				        <artifactId>amoebautils</artifactId>
-				        <version>1.1</version>
-				</dependency>
-		</dependencies>
+                <dependency>
+                        <groupId>com.github.Rndstad</groupId>
+                        <artifactId>Utils</artifactId>
+                        <version>0339a7e830</version>
+                </dependency>
+        </dependencies>
 
         <distributionManagement>
                 <repository>
